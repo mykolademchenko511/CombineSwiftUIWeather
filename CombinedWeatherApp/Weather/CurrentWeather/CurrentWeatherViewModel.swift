@@ -16,23 +16,22 @@ class CurrentWeatherViewModel: ObservableObject, Identifiable {
   }
 
   func refresh() {
-    weatherFetcher
-      .currentWeatherForecast(forCity: city)
-CurrentWeatherForecastResponse.
-      .map(CurrentWeatherRowViewModel.init)
-      .receive(on: DispatchQueue.main)
-      .sink(receiveCompletion: { [weak self] value in
-        guard let self = self else { return }
-        switch value {
-        case .failure:
-          self.dataSource = nil
-        case .finished:
-          break
-        }
-        }, receiveValue: { [weak self] weather in
-          guard let self = self else { return }
-          self.dataSource = weather
-      })
-      .store(in: &disposables)
-  }
+     weatherFetcher
+       .currentWeatherForecast(forCity: city)
+       .map(CurrentWeatherRowViewModel.init)
+       .receive(on: DispatchQueue.main)
+       .sink(receiveCompletion: { [weak self] value in
+         guard let self = self else { return }
+         switch value {
+         case .failure:
+           self.dataSource = nil
+         case .finished:
+           break
+         }
+         }, receiveValue: { [weak self] weather in
+           guard let self = self else { return }
+           self.dataSource = weather
+       })
+       .store(in: &disposables)
+   }
 }
